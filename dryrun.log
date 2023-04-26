@@ -1,8 +1,0 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/ee212857/Desktop/remote-streaming'
-g++ -c remotesrc.cpp `pkg-config --cflags --libs gstreamer-1.0` -fPIC
-g++    -c -o hostsrc.o hostsrc.cpp
-g++ -shared -o libremotesrc.so hostsrc.o `pkg-config --cflags --libs gstreamer-1.0`
-g++ -o exe main.cpp -lremotesrc `pkg-config --cflags --libs gstreamer-1.0` -I . -L .
-make: Leaving directory '/home/ee212857/Desktop/remote-streaming'
- 
