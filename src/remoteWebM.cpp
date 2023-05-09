@@ -63,7 +63,7 @@ int remotehost_WebM_pipeline (int argc, char *argv[]) {
     g_object_set(G_OBJECT(remote_host.udp_video_source), "caps", video_caps,
                                                          "port", 5000, NULL);
     /* Set the video watchdog property */
-    g_object_set(G_OBJECT(remote_host.video_watchdog), "timeout", 5000, NULL);
+    g_object_set(G_OBJECT(remote_host.video_watchdog), "timeout", 10000, NULL);
 
     /* Set the audio Capability */
     audio_caps = gst_caps_new_simple("application/x-rtp", 
@@ -75,7 +75,7 @@ int remotehost_WebM_pipeline (int argc, char *argv[]) {
     g_object_set(G_OBJECT(remote_host.udp_audio_source), "caps", audio_caps,
                                                          "port", 5001, NULL);
     /* Set the audio watchdog property */                 
-    g_object_set(G_OBJECT(remote_host.audio_watchdog), "timeout", 5000, NULL);
+    g_object_set(G_OBJECT(remote_host.audio_watchdog), "timeout", 10000, NULL);
 
 
     /* Link the video elements */
@@ -97,13 +97,13 @@ int remotehost_WebM_pipeline (int argc, char *argv[]) {
 
     /* Probe for audio */
     GstElement *sink_element = gst_bin_get_by_name(GST_BIN(remote_host.pipeline), "asink");
-	  GstPad *sinkpad = gst_element_get_static_pad(sink_element, "sink");
+	GstPad *sinkpad = gst_element_get_static_pad(sink_element, "sink");
     gst_pad_add_probe(sinkpad, GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM, probe_callback, NULL, NULL);
 
     /* Probe for video */
     sink_element = gst_bin_get_by_name(GST_BIN(remote_host.pipeline), "vsink");
-	  sinkpad = gst_element_get_static_pad(sink_element, "sink");
-	  gst_pad_add_probe(sinkpad, GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM, probe_callback, NULL, NULL);
+	sinkpad = gst_element_get_static_pad(sink_element, "sink");
+	gst_pad_add_probe(sinkpad, GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM, probe_callback, NULL, NULL);
 
     /* Set the pipeline to playing state */
     ret = gst_element_set_state(remote_host.pipeline, GST_STATE_PLAYING);

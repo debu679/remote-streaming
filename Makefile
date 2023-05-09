@@ -3,7 +3,7 @@ path = src
 header = ./includes/
 LIBS = `pkg-config --cflags --libs gstreamer-1.0`
 
-all: remotesrc.o remotesrc.so remotemp3.o remotemp3.so remoteWebM.o remoteWebM.so remoteAvi.o remoteAvi.so exe 
+all: remotesrc.o remotesrc.so remotemp3.o remotemp3.so remoteWebM.o remoteWebM.so remoteAvi.o remoteAvi.so thumbnail.o thumbnail.so exe 
 
 remotesrc.o:	$(path)/remotesrc.cpp
 	$(CC) -c $(path)/remotesrc.cpp $(LIBS) -fPIC -I $(header)
@@ -21,8 +21,12 @@ remoteAvi.o:	$(path)/remoteAvi.cpp
 	$(CC) -c $(path)/remoteAvi.cpp $(LIBS) -fPIC -I $(header)
 remoteAvi.so:	remoteAvi.o
 	$(CC) -shared -o libremoteAvi.so remoteAvi.o $(LIBS)
+thumbnail.o:	$(path)/thumbnail.cpp
+	$(CC) -c $(path)/thumbnail.cpp $(LIBS) -fPIC -I $(header)
+thumbnail.so:	thumbnail.o
+	$(CC) -shared -o libthumbnail.so thumbnail.o $(LIBS)
 exe: main.cpp 
-	$(CC) -o exe main.cpp -lremotesrc -lremotemp3 -lremoteWebM -lremoteAvi $(LIBS) -I $(header) -L .
+	$(CC) -o exe main.cpp -lremotesrc -lremotemp3 -lremoteWebM -lremoteAvi -lthumbnail $(LIBS) -I $(header) -L .
 run: exe
 	./exe
 clean:

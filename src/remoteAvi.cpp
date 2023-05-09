@@ -5,7 +5,7 @@
 int remotehost_Avi_pipeline (int argc, char *argv[]) {
     GstBus *bus;
     GstStateChangeReturn ret;
-    RemoteWebM remote_host;
+    RemoteAvi remote_host;
     GstCaps *audio_caps = NULL;
     GstCaps *video_caps = NULL;
     CustomData data;
@@ -96,13 +96,13 @@ int remotehost_Avi_pipeline (int argc, char *argv[]) {
 
     /* Probe for audio */
     GstElement *sink_element = gst_bin_get_by_name(GST_BIN(remote_host.pipeline), "asink");
-	  GstPad *sinkpad = gst_element_get_static_pad(sink_element, "sink");
+	GstPad *sinkpad = gst_element_get_static_pad(sink_element, "sink");
     gst_pad_add_probe(sinkpad, GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM, probe_callback, NULL, NULL);
 
     /* Probe for video */
     sink_element = gst_bin_get_by_name(GST_BIN(remote_host.pipeline), "vsink");
-	  sinkpad = gst_element_get_static_pad(sink_element, "sink");
-	  gst_pad_add_probe(sinkpad, GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM, probe_callback, NULL, NULL);
+	sinkpad = gst_element_get_static_pad(sink_element, "sink");
+	gst_pad_add_probe(sinkpad, GST_PAD_PROBE_TYPE_EVENT_DOWNSTREAM, probe_callback, NULL, NULL);
 
     /* Set the pipeline to playing state */
     ret = gst_element_set_state(remote_host.pipeline, GST_STATE_PLAYING);

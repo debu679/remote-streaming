@@ -81,12 +81,26 @@ typedef struct _RemoteAvi {
     GMainLoop *loop;
 }RemoteAvi;
 
+typedef struct _Thumbnail {
+    GstElement *pipeline;
+    GstElement *udpsrc;
+    GstElement *watchdog;
+    GstElement *caps_filter;
+    GstElement *rtp_depay;
+    GstElement *decoder;
+    GstElement *videoconvert;
+    GstElement *sink;
+    GMainLoop *loop;
+}Thumbnail;
+
 extern int remotehost_Mp4_pipeline (int, char *[]);
 
 extern int remotehost_Mp3_pipeline (int, char *[]);
-
+    
 extern int remotehost_WebM_pipeline (int, char *[]);
 
 extern int remotehost_Avi_pipeline (int, char *[]);
+
+extern int thumbnail_pipeline (int, char *[]);
 
 #endif
