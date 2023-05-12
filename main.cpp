@@ -9,7 +9,7 @@
 #include <unistd.h>
 
 /* Defining port number and size of buffer */
-#define PORT 8083
+#define PORT 8090
 #define MAXLINE 1024
 
 void receive_extention(){
@@ -29,7 +29,7 @@ void receive_extention(){
     servaddr.sin_port = htons(PORT);
 
     /* Convert IPv4 and IPv6 addresses from text to binary form */
-    if (inet_pton(AF_INET, "10.1.139.244", &servaddr.sin_addr) <= 0) {
+    if (inet_pton(AF_INET, "10.1.137.49", &servaddr.sin_addr) <= 0) {
         perror("Invalid address/ Address not supported");
         exit(EXIT_FAILURE);
     }
@@ -42,7 +42,7 @@ void receive_extention(){
 
     /* Receive string from server and print it */
 	recv(sockfd, &buffer, sizeof(buffer), 0);
-	printf("\n%s\n", buffer);
+	printf("\nFile: %s\n", buffer);
 
     int argc;
     char *argv[] = {0};
@@ -51,14 +51,14 @@ void receive_extention(){
     if(strcmp(buffer, "mp3") == 0){
         remotehost_Mp3_pipeline(argc, argv);
     }else if(strcmp(buffer, "webm") == 0){
-        thumbnail_pipeline(argc, argv);
         remotehost_WebM_pipeline(argc, argv);
+        thumbnail_pipeline(argc, argv);
     }else if(strcmp(buffer, "mp4") == 0){
-        thumbnail_pipeline(argc, argv);
         remotehost_Mp4_pipeline(argc, argv);
-    }else if(strcmp(buffer, "avi") == 0){
         thumbnail_pipeline(argc, argv);
+    }else if(strcmp(buffer, "avi") == 0){
         remotehost_Avi_pipeline(argc, argv);
+        thumbnail_pipeline(argc, argv);
     }else{  
         g_printerr("Unsupported format!");
     }
@@ -68,9 +68,7 @@ void receive_extention(){
 }
 
 int main (int argc, char *argv[]) {
-    
-    // return remotehost_WebM_pipeline (argc, argv);
-    
+        
     while(1){
         receive_extention();
     }

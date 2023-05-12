@@ -13,6 +13,7 @@ typedef struct _CustomData{
   takes appropriate actions based on the message type. */
 static void callback_message (GstBus *bus, GstMessage *msg, CustomData *data) {
 
+  /* Handling error message */
   switch (GST_MESSAGE_TYPE(msg)) {
     case GST_MESSAGE_ERROR: {
         GError *err;
@@ -25,6 +26,7 @@ static void callback_message (GstBus *bus, GstMessage *msg, CustomData *data) {
         g_main_loop_quit (data->loop);
     }
     break;
+  /* Handling warning message */
     case GST_MESSAGE_WARNING:{
 			GError *error = NULL;
 			gchar *debug = NULL;
@@ -35,6 +37,7 @@ static void callback_message (GstBus *bus, GstMessage *msg, CustomData *data) {
 			g_free(debug);
 		}
 		break;
+  /* Handling pipeline state change message */
     case GST_MESSAGE_STATE_CHANGED: {
       if (GST_MESSAGE_SRC(msg) == GST_OBJECT(data->pipeline)) {
         GstState old_state, new_state, pending_state;
@@ -43,6 +46,7 @@ static void callback_message (GstBus *bus, GstMessage *msg, CustomData *data) {
       }
     }
     break;
+  /* Handling message info */
     case GST_MESSAGE_INFO:	{
 			GError *error = NULL;
 			gchar *debug = NULL;
